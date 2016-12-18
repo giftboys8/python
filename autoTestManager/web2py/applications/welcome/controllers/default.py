@@ -58,4 +58,16 @@ def call():
     """
     return service()
 
+def first():
+    # if request.vars.WSDL:
+    #     session.WSDL=request.vars.WSDL
+    #     redirect(URL('second'))
+    # return dict()
+    form = FORM('Your name:', INPUT(_name='name'), INPUT(_type='submit'))
+    return dict(form=form)
 
+
+def second():
+    if request.function=='first' and not session.WSDL:
+        redirect(URL("first"))
+    return dict()

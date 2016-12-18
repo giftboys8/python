@@ -184,6 +184,7 @@
 'Invalid action': '无效动作',
 'Invalid email': '无效的email',
 'invalid password': '无效密码',
+'invalid password.': 'invalid password.',
 'Invalid Query': '无效查询',
 'invalid request': '无效请求',
 'invalid ticket': '无效传票',

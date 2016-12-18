@@ -39,6 +39,26 @@ auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
 
-
+'''
+    用例管理
+'''
 casedb=DAL('sqlite://storage.sqlite')
 casedb.define_table('testCase',Field('id'),Field('caseName'),Field('elecementId'))
+'''
+    图片管理
+'''
+bugdb=DAL('sqlite://storage.sqlite')
+bugdb.define_table('image',Field('title',unique=True),Field('file','upload'),format='%(title)s')
+
+bugdb.define_table('bugdetail',Field('image_id',bugdb.image),Field('author'),Field('email'),Field('body','text'))
+
+bugdb.image.title.requires=IS_NOT_IN_DB(bugdb,bugdb.image.title)
+bugdb.bugdetail.image_id.requires=IS_IN_DB(bugdb,bugdb.image.id,'%(title)s')
+bugdb.bugdetail.author.requires=IS_NOT_EMPTY()
+bugdb.bugdetail.body.requires=IS_NOT_EMPTY()
+
+bugdb.bugdetail.image_id.writable = bugdb.bugdetail.image_id.readable = False
+
+
+
+

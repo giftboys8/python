@@ -1,17 +1,3 @@
-        {{extend 'layout.html'}}
-        <p></p>
-
-        <!-- 添加服务-->
-
-        <form action="addWsdl">
-            <span>添加WSDL地址</span>
-            <input name="wsdl_url">
-            <input type="submit" value="加入wsdl"/>
-        </form>
-
-        <div>
-            <h3>
-                {{=T('WSDL URL   %s',counter) if request.args(0) == 'addwsdl' else T('VIEW WSDL    %s',counter)}}
-            </h3>
-        </div>
-        {{=T('You Kill Me   %s',(request.vars.url or ''))}}
+{{extend 'layout.html'}}
+<H1>添加服务</H1>
+{{=wsdlform}}
