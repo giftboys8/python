@@ -47,17 +47,27 @@ casedb.define_table('testCase',Field('id'),Field('caseName'),Field('elecementId'
 '''
     图片管理
 '''
+
+from gluon.tools import Crud
+from gluon.tools import Auth
+
 bugdb=DAL('sqlite://storage.sqlite')
+auth=Auth(bugdb)
+auth.define_tables()
+
+curd=Crud(bugdb)
+
 bugdb.define_table('image',Field('title',unique=True),Field('file','upload'),format='%(title)s')
-
 bugdb.define_table('bugdetail',Field('image_id',bugdb.image),Field('author'),Field('email'),Field('body','text'))
-
 bugdb.image.title.requires=IS_NOT_IN_DB(bugdb,bugdb.image.title)
 bugdb.bugdetail.image_id.requires=IS_IN_DB(bugdb,bugdb.image.id,'%(title)s')
 bugdb.bugdetail.author.requires=IS_NOT_EMPTY()
 bugdb.bugdetail.body.requires=IS_NOT_EMPTY()
 
 bugdb.bugdetail.image_id.writable = bugdb.bugdetail.image_id.readable = False
+
+
+
 
 
 

@@ -42,12 +42,15 @@ def showbug():
     images=bugdb().select(bugdb.image.ALL,orderby=bugdb.image.title)
     return dict(images=images)
 
+@auth.requires_login()
 def show():
-        image = bugdb(bugdb.image.id==request.args(0)).select().first()
+        image = bugdb.image(request.args(0)) or redirect(URL('show'))
         bugdb.bugdetail.image_id.default = image.id
-        bugform = SQLFORM(bugdb.bugdetail)
-        if bugform.process().accepted:
-            response.flash = '问题单详情'
+        bugform = curd.create(bugdb.bugdetail,next=URL(args=image.id),message='you are ok')
+            #SQLFORM(bugdb.bugdetail)
+        #if bugform.process().accepted:
+        #    response.flash = '问题单详情'
+        # bugform=crud.create(bugdb.bugdetail,message='your comment is post',next=URL(args=image.id))
         bugdetails = bugdb(bugdb.bugdetail.image_id==image.id).select()
         return dict(image=image,bugdetails=bugdetails,bugform=bugform)
         # return dict(image=image)
@@ -55,15 +58,65 @@ def show():
 def download():
     return response.download(request,bugdb)
 
+# @auth.requires_membership('manager')
+def manager():
+    grid=SQLFORM.smartgrid(bugdb.image)
+    return dict(grid=grid)
+
 
 
 def testsoap():
     import suds
-    from suds.bindings import binding
-    from suds.bindings import rpc
     url='http://127.0.0.1:8080/WebserviceSample-0.0.1-SNAPSHOT/ws/addServicePort?wsdl'
     client=suds.client.Client(url)
-    addresult=binding.Binding().__init__(url)
-    rpcresult=rpc.Binding(addresult)
-    xmlresult=rpc.Encoded.unmarshaller()
-    return dict(client=client,addresult=addresult,rpcresult=rpcresult,xmlresult=xmlresult)
+    xmlresult=client.service.addService(41,25)
+    soapclient=""
+    soapclient =client.last_received()
+    soapclient=client.last_sent()
+    #soapclient=client.clientclass()
+    soapclient=client.service.__getitem__(addService)
+    # soapclient=client.service.__dict__.iterkeys()
+    return dict(client=client,xmlresult=xmlresult,soapclient=soapclient)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
