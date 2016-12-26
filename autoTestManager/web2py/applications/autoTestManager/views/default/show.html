@@ -1,0 +1,13 @@
+{{extend 'layout.html'}}
+<h2>图片:{{=image.title}}</h2>
+<center><img width="400px" src="{{=URL('download',args=image.file)}}"/></center>
+{{if len(bugdetails):}}
+<h3>问题清单</h3><br /><p>
+{{for bugdetail in bugdetails:}}
+<p> {{=bugdetail.author}} says <i> {{=bugdetail.body}}</i></p>
+{{pass}}</p>
+{{else:}}
+<h3>无法提交</h3>
+{{pass}}
+<h3>提交问题</h3>
+{{=bugform}}

@@ -68,7 +68,14 @@ bugdb.bugdetail.image_id.writable = bugdb.bugdetail.image_id.readable = False
 
 
 
+'''
+    我的图片
+'''
+photodb=DAL('sqlite://storage.sqlite')
+photodb.define_table('photofile',Field('name',unique=True),Field('photofile','upload'),format=('%(nme)s'))
+photodb.define_table('comment',Field('photo_id',photodb.photofile),Field('author'),Field('body','text'))
 
+photodbcurd=Crud(photodb)
 
 
 

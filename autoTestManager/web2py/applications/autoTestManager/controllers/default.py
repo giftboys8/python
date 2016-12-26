@@ -1,3 +1,26 @@
+
+
+import suds.metrics as metrics
+from cookielib import CookieJar
+from suds import *
+from suds.reader import DefinitionsReader
+from suds.transport import TransportError, Request
+from suds.transport.https import HttpAuthenticated
+from suds.servicedefinition import ServiceDefinition
+from suds import sudsobject
+from suds.resolver import PathResolver
+from suds.builder import Builder
+from suds.wsdl import Definitions
+from suds.cache import ObjectCache
+from suds.sax.document import Document
+from suds.sax.parser import Parser
+from suds.options import Options
+from suds.properties import Unskin
+from urlparse import urlparse
+from copy import deepcopy
+from suds.plugin import PluginContainer
+from logging import getLogger
+
 def index():
     '''
     response.flash = T("Hello World")
@@ -16,7 +39,6 @@ def user():
     return dict(form=auth())
 
 
-@cache.action()
 def download():
     return response.download(request, db)
 
@@ -67,56 +89,45 @@ def manager():
 
 def testsoap():
     import suds
+    from suds.client import SoapClient
     url='http://127.0.0.1:8080/WebserviceSample-0.0.1-SNAPSHOT/ws/addServicePort?wsdl'
     client=suds.client.Client(url)
-    xmlresult=client.service.addService(41,25)
-    soapclient=""
-    soapclient =client.last_received()
-    soapclient=client.last_sent()
-    #soapclient=client.clientclass()
-    soapclient=client.service.__getitem__(addService)
-    # soapclient=client.service.__dict__.iterkeys()
-    return dict(client=client,xmlresult=xmlresult,soapclient=soapclient)
+        
+
+
+    # e=suds.client.Method(client,'addService').__call__
+    # a=suds.client.Method(client,'addService')
+
+    # xmlresult=client.service.addService(41,25)
+    xmlresult=''
+    # soapclient =client.last_received()
+    # soapclient=client.last_sent()
+
+
+    soapclienta=client.sd
+    # a=soapclienta[0]
+    # a=client.dict(client.wsdl.imports.count())
+
+    #取得URL地址
+    # a=client.wsdl.url
+
+    #取得binding地址
+    # a=dict(client.wsdl.bindings).keys()
 
 
 
+    # a='a'
+    # a = dict(dict(client.wsdl.bindings).values()[0]).get('root')
+    # for a in soapclienta:
+    #     a
+    # pass
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    # soapclientb=client.service.checkFileExist('a')
+    b=client.last_sent()
+    # for b in soapclientb:
+    #     b
+    # pass
+    #soapclient=client.service.types()
+    # soapclient=client.service.__getitem__(addService)
+    #soapclient=client.service.__getattr__('portType')
+    return dict(client=client,xmlresult=xmlresult,soapclient=soapclienta,a=e,b=b)
